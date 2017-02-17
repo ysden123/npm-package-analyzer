@@ -1,10 +1,12 @@
+/*
+ * Copyright (c) 2017. Yuriy Stul
+ */
+
 package com.stulsoft.npm.analyzer
 
 import java.io.File
 
-import org.json4s.{JObject, JString}
 import org.json4s.native.JsonMethods._
-
 
 /**
   * Reads NPM package
@@ -12,18 +14,21 @@ import org.json4s.native.JsonMethods._
   * @author Yuriy Stul
   */
 object PackageReader {
-  def readPackage(path: String): Iterable[String] = {
+  /**
+    * Gets a collection of the dependencies
+    *
+    * @param path full path to file (package.json)
+    * @return the collection of the dependencies
+    */
+  def getDependencies(path: String): Iterable[String] = {
     val file = new File(path)
     val json = parse(file)
-    val dependencies =  json.values.asInstanceOf[Map[String, AnyVal]].get("dependencies").get
-//    println(dependencies.asInstanceOf[Map[String,String]].keys)
-    dependencies.asInstanceOf[Map[String,String]].keys
+    try {
+      val dependencies = json.values.asInstanceOf[Map[String, AnyVal]]("dependencies")
+      dependencies.asInstanceOf[Map[String, String]].keys
+    }
+    catch {
+      case _: Exception => Set[String]()
+    }
   }
-}
-
-object Test extends App {
-
-  val dependencies=PackageReader.readPackage(new File(Test.getClass.getResource("/package.json").getPath)
-    .getAbsolutePath.replaceAll("%20", " "))
-  println(dependencies.mkString(", "))
 }
