@@ -16,3 +16,4 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 .idea/
+src/test/resources/test-project/node_modules/

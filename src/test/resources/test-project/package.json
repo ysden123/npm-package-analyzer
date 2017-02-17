@@ -1,0 +1,19 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "description": "The test project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "keywords": [
+    "test",
+    "project",
+    "npm"
+  ],
+  "author": "Yuriy Stul",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^2.6.1"
+  }
+}
