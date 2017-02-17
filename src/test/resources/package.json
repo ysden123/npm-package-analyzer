@@ -1,0 +1,28 @@
+{
+  "name": "ys-pnodejs",
+  "version": "1.1.2",
+  "description": "Playing with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysden123/ys-pnodejs.git"
+  },
+  "keywords": [
+    "node.js",
+    "study",
+    "playing"
+  ],
+  "author": "Yuriy Stul",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ysden123/ys-pnodejs/issues"
+  },
+  "dependencies": {
+    "hazelcast-client": "^0.3.0",
+    "async": "^2.0.0-rc.6"
+  },
+  "homepage": "https://github.com/ysden123/ys-pnodejs#readme"
+}
