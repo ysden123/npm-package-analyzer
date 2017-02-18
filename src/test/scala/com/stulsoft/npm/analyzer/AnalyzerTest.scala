@@ -16,17 +16,19 @@ import org.scalatest.{FlatSpec, Matchers}
 class AnalyzerTest extends FlatSpec with Matchers {
   behavior of "AnalyzerTest"
 
-  "getModuleName" should "return None for incorrect input" in {
-    Analyzer.getModuleName(null) should equal(None)
-    Analyzer.getModuleName("") should equal(None)
+  "getModuleName" should "return empty collection for incorrect input" in {
+    Analyzer.getModuleNames(null).size should equal(0)
+    Analyzer.getModuleNames("").size should equal(0)
   }
 
   it should "return module name" in {
-    Analyzer.getModuleName("require('test')") should equal(Some("test"))
-    Analyzer.getModuleName("""require("test")""") should equal(Some("test"))
-    Analyzer.getModuleName(""" require("test").""") should equal(Some("test"))
-    Analyzer.getModuleName(""" new (require("test")).""") should equal(Some("test"))
-    Analyzer.getModuleName(""" abc require("test")()""") should equal(Some("test"))
+    Analyzer.getModuleNames("require('test')") should equal(Set("test"))
+    Analyzer.getModuleNames("""require("test")""") should equal(Set("test"))
+    Analyzer.getModuleNames(""" require("test").""") should equal(Set("test"))
+    Analyzer.getModuleNames(""" new (require("test")).""") should equal(Set("test"))
+    Analyzer.getModuleNames(""" abc require("test")()""") should equal(Set("test"))
+    Analyzer.getModuleNames("""require("test1")require('test2')""") should equal(Set("test1","test2"))
+    Analyzer.getModuleNames("""require("te-st1")require('te_st2')""") should equal(Set("te-st1","te_st2"))
   }
 
   "getDependencies" should "get dependencies from package.json filr" in {

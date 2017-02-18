@@ -31,21 +31,23 @@ object Analyzer extends App {
       case _: Exception => Set[String]()
     }
   }
+
   /**
-    * Returns name of module, if it was defined
+    * Returns collection of module names
     *
     * @param text the test text
-    * @return name of module, if it was defined; None - otherwise
+    * @return collection of module names; the collection may be empty
     */
-  def getModuleName(text: String): Option[String] = {
-    text match {
-      case null => None
-      case s: String if s.isEmpty => None
-      case s: String =>
-        val pattern = "require\\([',\"](.*)[',\"]\\)".r
-        for (m <- pattern findFirstMatchIn s) yield m.group(1)
+  def getModuleNames(text: String): Set[String] = {
+    if (text != null && !text.isEmpty) {
+      val pattern = "require\\([',\"]([a-zA-Z0-9_\\-\\ ]*)[',\"]\\)".r
+      val moduleNames = for (m <- pattern findAllMatchIn text) yield m.group(1)
+      moduleNames.toSet
+    } else {
+      Set()
     }
   }
+
   /**
     * Returns an array of the JavaScript files.
     *
@@ -62,7 +64,7 @@ object Analyzer extends App {
   private def getUsedModuleNames(files: Array[File]): Set[String] = {
     files
       .map(file => Source.fromFile(file).getLines()
-        .map(getModuleName)
+        .map(getModuleNames)
         .flatten)
       .flatMap(_.toSeq)
       .toSet
@@ -75,7 +77,7 @@ object Analyzer extends App {
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
   }
 
-  require(args != null && args.length >= 1, "Path to npm project is not specified.")
+  require(args != null && args.length != 1, "Path to npm project is not specified.")
   val projectPath = new File(args(0))
   require(projectPath.exists() && projectPath.isDirectory, s"Wrong path to npm project: ${args(0)}")
 
