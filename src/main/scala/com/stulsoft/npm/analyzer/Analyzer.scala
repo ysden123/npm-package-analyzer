@@ -66,7 +66,15 @@ object Analyzer extends App {
       .map(file => Source.fromFile(file).getLines()
         .map(getModuleNames)
         .flatten)
-      .flatMap(_.toSeq)
+      .flatMap(x => {
+        try {
+          x.toSeq
+        }
+        catch {
+          case _: Exception =>
+            Seq()
+        }
+      })
       .toSet
   }
 
