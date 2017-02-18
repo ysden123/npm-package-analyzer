@@ -4,7 +4,7 @@
 
 package com.stulsoft.npm.analyzer
 
-import java.io.File
+import java.io.{File, FileInputStream}
 
 import org.json4s.native.JsonMethods.parse
 
@@ -62,20 +62,11 @@ object Analyzer extends App {
   }
 
   private def getUsedModuleNames(files: Array[File]): Set[String] = {
-    files
-      .map(file => Source.fromFile(file).getLines()
-        .map(getModuleNames)
-        .flatten)
-      .flatMap(x => {
-        try {
-          x.toSeq
-        }
-        catch {
-          case _: Exception =>
-            Seq()
-        }
-      })
-      .toSet
+    files.flatMap(file => {
+      Source.fromInputStream(new FileInputStream(file), "UTF8")
+        .getLines()
+        .flatMap(getModuleNames)
+    }).toSet
   }
 
   def getUnusedModuleNames(path: String): Set[String] = {
@@ -85,6 +76,7 @@ object Analyzer extends App {
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
   }
 
+  println("NPM package analyzer, V 0.0.3")
   require(args != null && args.length == 1, "Path to npm project is not specified.")
   val projectPath = new File(args(0))
   require(projectPath.exists() && projectPath.isDirectory, s"Wrong path to npm project: ${args(0)}")
