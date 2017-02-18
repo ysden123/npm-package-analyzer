@@ -77,9 +77,11 @@ object Analyzer extends App {
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
   }
 
-  require(args != null && args.length != 1, "Path to npm project is not specified.")
+  require(args != null && args.length == 1, "Path to npm project is not specified.")
   val projectPath = new File(args(0))
   require(projectPath.exists() && projectPath.isDirectory, s"Wrong path to npm project: ${args(0)}")
+
+  println(s"Analyzing project ${projectPath.getName}")
 
   val unusedModuleNames = getUnusedModuleNames(args(0))
   println(s"Number of unused modules is ${unusedModuleNames.size}")

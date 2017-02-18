@@ -29,6 +29,8 @@ lazy val root = (project in file("."))
     name := "npm-package-analyzer"
   )
 
+mainClass in assembly := Some("com.stulsoft.npm.analyzer.Analyzer")
+
 coverageEnabled := true
 
 // To get coverage run command: sbt clean coverage test coverageReport
