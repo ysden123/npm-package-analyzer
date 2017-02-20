@@ -7,8 +7,8 @@ lazy val json4sVersion = "3.5.0"
 
 lazy val commonSettings = Seq(
   organization := "com.stulsoft",
-  version := "0.0.3",
-  scalaVersion := "2.11.8",
+  version := "0.0.4",
+  scalaVersion := "2.12.1",
   scalacOptions ++= Seq(
     "-feature",
     "-language:implicitConversions",
@@ -17,6 +17,7 @@ lazy val commonSettings = Seq(
     "ch.qos.logback" % "logback-classic" % logbackVersion,
     "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
     "org.json4s" %% "json4s-native" % json4sVersion,
+
     "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
   )
 )

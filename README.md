@@ -11,16 +11,22 @@ compares them with dependencies from package.json.
 Analyzer outputs number of unused modules and unused module
 names. 
 
+
+## Test Coverage
+```
+sbt clean coverage test
+```
+
 ## Build
 Run command:
-```ahell
+```
 sbt assembly
 ```
-JAR location is target\scala-2.11\npm-package-analyzer-assembly-[version].jar
+JAR location is target\scala-2.12\npm-package-analyzer-assembly-[version].jar
 
 ## Running
 
-```shell
-java -jar npm-package-analyzer-assembly-0.0.1.jar [path to directory with project]
+```
+java -jar npm-package-analyzer-assembly-0.0.4.jar [path to directory with project]
 ```
 
