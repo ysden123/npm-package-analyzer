@@ -1,8 +1,6 @@
 # npm-package-analyzer
 NPM package analyzer
 
-[![Build Status](https://travis-ci.org/ysden123/npm-package-analyzer.svg?branch=master)](https://travis-ci.org/ysden123/npm-package-analyzer)
-
 ## Description
 The NPM package analyzer scans all JavaScript (".js") files, 
 extracts used module names (from require([module])) and
