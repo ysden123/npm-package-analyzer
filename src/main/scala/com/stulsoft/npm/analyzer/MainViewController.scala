@@ -6,6 +6,8 @@ package com.stulsoft.npm.analyzer
 
 import javafx.beans.value.{ChangeListener, ObservableValue}
 
+import com.stulsoft.npm.analyzer
+
 import scalafx.event.ActionEvent
 import scalafx.scene.control.{Button, TextArea, TextField}
 import scalafx.stage.{DirectoryChooser, Stage}
@@ -32,7 +34,7 @@ class MainViewController(directoryText: TextField,
 
   def onChooseDir(event: ActionEvent): Unit = {
     val dirChooser = new DirectoryChooser
-    val dir = dirChooser.showDialog(new Stage())
+    val dir = dirChooser.showDialog(analyzer.startStage)
     if (dir != null) directoryText.text = dir.getAbsoluteFile.toString
   }
 
