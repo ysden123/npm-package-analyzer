@@ -35,7 +35,7 @@ lazy val root = (project in file("."))
     name := "npm-package-analyzer"
   )
 
-mainClass in assembly := Some("com.stulsoft.npm.analyzer.Analyzer")
+mainClass in assembly := Some("com.stulsoft.npm.analyzer.MainView")
 
 coverageEnabled := true
 

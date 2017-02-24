@@ -4,10 +4,9 @@
 
 package com.stulsoft.npm.analyzer
 
-import scalafx.Includes._
-import scalafx.application.Platform
 import scalafx.event.ActionEvent
 import scalafx.scene.control.{Button, TextArea, TextField}
+import scalafx.stage.{DirectoryChooser, Stage}
 import scalafxml.core.macros.sfxml
 
 /**
@@ -21,11 +20,16 @@ class MainViewController(directoryText: TextField,
                          analyzeButton: Button,
                          resultText: TextArea
                         ) {
-  def onChooseDir(event:ActionEvent): Unit ={
-    resultText.text = resultText.text.value + "Cheese!\n"
+  def onChooseDir(event: ActionEvent): Unit = {
+    val dirChooser = new DirectoryChooser
+    val dir = dirChooser.showDialog(new Stage())
+    if (dir != null) {
+      directoryText.text = dir.getAbsoluteFile.toString
+    }
   }
 
-  def onAnalyze(event:ActionEvent): Unit ={
-    resultText.text = resultText.text.value + "Analyze!\n"
+  def onAnalyze(event: ActionEvent): Unit = {
+    if (!directoryText.text.value.isEmpty)
+      resultText.text = new Analyzer(directoryText.text.value).analyze
   }
 }
