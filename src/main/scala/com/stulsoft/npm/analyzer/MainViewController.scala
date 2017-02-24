@@ -38,6 +38,10 @@ class MainViewController(directoryText: TextField,
 
   def onAnalyze(event: ActionEvent): Unit = {
     if (!directoryText.text.value.isEmpty)
-      resultText.text = new Analyzer(directoryText.text.value).analyze
+      try {
+        resultText.text = new Analyzer(directoryText.text.value).analyze
+      }catch{
+        case e:Exception=> resultText.text = s"Error: ${e.getMessage}"
+      }
   }
 }
