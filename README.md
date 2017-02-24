@@ -27,6 +27,6 @@ JAR location is target\scala-2.12\npm-package-analyzer-assembly-[version].jar
 ## Running
 
 ```
-java -jar npm-package-analyzer-assembly-0.0.4.jar [path to directory with project]
+java -jar npm-package-analyzer-assembly-0.1.0.jar
 ```
 

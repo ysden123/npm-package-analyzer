@@ -13,7 +13,11 @@ import scala.io.Source
 /**
   * @author Yuriy Stul
   */
-object Analyzer extends App {
+class Analyzer(val directory: String) {
+  require(directory != null && !directory.isEmpty, s"Wrong path to npm project: $directory")
+  val projectPath = new File(directory)
+  require(projectPath.exists() && projectPath.isDirectory, s"Wrong path to npm project: $directory")
+
   /**
     * Gets a collection of the dependencies
     *
@@ -61,7 +65,7 @@ object Analyzer extends App {
     these ++ dir.listFiles.filter(f => f.isDirectory && !f.getName.contains("node_modules")).flatMap(getJSFiles)
   }
 
-  private def getUsedModuleNames(files: Array[File]): Set[String] = {
+  def getUsedModuleNames(files: Array[File]): Set[String] = {
     files.flatMap(file => {
       Source.fromInputStream(new FileInputStream(file), "UTF8")
         .getLines()
@@ -76,18 +80,23 @@ object Analyzer extends App {
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
   }
 
-  println("NPM package analyzer, V 0.0.3")
-  require(args != null && args.length == 1, "Path to npm project is not specified.")
-  val projectPath = new File(args(0))
-  require(projectPath.exists() && projectPath.isDirectory, s"Wrong path to npm project: ${args(0)}")
+  def analyze: String = {
+    val buffer = new StringBuilder("NPM package analyzer, V 0.1.0\n")
 
-  println(s"Analyzing project ${projectPath.getName}")
+    buffer.append(s"Analyzing project ${projectPath.getName}\n")
 
-  val unusedModuleNames = getUnusedModuleNames(args(0))
-  println(s"Number of unused modules is ${unusedModuleNames.size}")
+    try {
+      val unusedModuleNames = getUnusedModuleNames(directory)
+      buffer.append(s"Number of unused modules is ${unusedModuleNames.size}\n")
 
-  if (unusedModuleNames.nonEmpty) {
-    println("List of unused modules:")
-    unusedModuleNames.foreach(println)
+      if (unusedModuleNames.nonEmpty) {
+        buffer.append("List of unused modules:\n")
+        unusedModuleNames.foreach(n => buffer.append(s"$n\n"))
+      }
+    } catch {
+      case e: Exception => buffer.append(s"Exception: ${e.getMessage}\n")
+    }
+
+    buffer.toString
   }
 }
