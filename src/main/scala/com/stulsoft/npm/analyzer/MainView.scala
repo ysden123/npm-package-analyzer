@@ -10,6 +10,7 @@ import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
+import scalafx.scene.image.Image
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 /**
@@ -22,5 +23,6 @@ object MainView extends JFXApp {
     title = "(c) StulSoft: npm package analyzer"
     scene = new Scene(root)
   }
+  stage.getIcons.add(new Image(getClass.getResourceAsStream("/images/application.png")))
   analyzer.startStage = stage
 }
