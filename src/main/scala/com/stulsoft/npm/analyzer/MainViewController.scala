@@ -8,6 +8,7 @@ import javafx.beans.value.{ChangeListener, ObservableValue}
 
 import com.stulsoft.npm.analyzer
 
+import scala.concurrent.Future
 import scalafx.event.ActionEvent
 import scalafx.scene.Cursor
 import scalafx.scene.control.{Button, TextArea, TextField}
@@ -42,16 +43,15 @@ class MainViewController(directoryText: TextField,
   def onAnalyze(event: ActionEvent): Unit = {
     if (!directoryText.text.value.isEmpty) {
       analyzer.startStage.scene().setCursor(Cursor.Wait)
-      new Thread {
-        override def run(): Unit = {
-          try {
-            resultText.text = new Analyzer(directoryText.text.value).analyze
-          } catch {
-            case e: Exception => resultText.text = s"Error: ${e.getMessage}"
-          }
-          analyzer.startStage.scene().setCursor(Cursor.Default)
+      import scala.concurrent.ExecutionContext.Implicits.global
+      Future[Unit] {
+        try {
+          resultText.text = new Analyzer(directoryText.text.value).analyze
+        } catch {
+          case e: Exception => resultText.text = s"Error: ${e.getMessage}"
         }
-      }.start()
+        analyzer.startStage.scene().setCursor(Cursor.Default)
+      }
     }
   }
 }
