@@ -43,15 +43,21 @@ class MainViewController(directoryText: TextField,
   def onAnalyze(event: ActionEvent): Unit = {
     if (!directoryText.text.value.isEmpty) {
       analyzer.startStage.scene().setCursor(Cursor.Wait)
+      analyzeButton.disable = true
       import scala.concurrent.ExecutionContext.Implicits.global
-      Future[Unit] {
+      val f: Future[String] = Future {
         try {
-          resultText.text = new Analyzer(directoryText.text.value).analyze
+          new Analyzer(directoryText.text.value).analyze
         } catch {
-          case e: Exception => resultText.text = s"Error: ${e.getMessage}"
+          case e: Exception => s"Error: ${e.getMessage}"
         }
-        analyzer.startStage.scene().setCursor(Cursor.Default)
       }
+
+      f foreach (result => {
+        resultText.text = result
+        analyzer.startStage.scene().setCursor(Cursor.Default)
+        analyzeButton.disable = false
+      })
     }
   }
 }
