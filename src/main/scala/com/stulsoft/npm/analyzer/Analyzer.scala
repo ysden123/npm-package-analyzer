@@ -43,8 +43,11 @@ class Analyzer(val directory: String) {
     * @return collection of module names; the collection may be empty
     */
   def getModuleNames(text: String): Set[String] = {
+    if (text.contains("jpt-google-adwords"))
+      println(text)
     if (text != null && !text.isEmpty) {
-      val pattern = "require\\([',\"]([a-zA-Z0-9_\\-\\ ]*)[',\"]\\)".r
+//      val pattern = "require\\([',\"]([a-zA-Z0-9_\\-\\ ]*)[',\"]\\)".r
+      val pattern = "require\\([',\"]([a-zA-Z0-9_\\-\\ ]*)[/|'|\"]\\)".r
       val moduleNames = for (m <- pattern findAllMatchIn text) yield m.group(1)
       moduleNames.toSet
     } else {
@@ -75,6 +78,8 @@ class Analyzer(val directory: String) {
 
   def getUnusedModuleNames(path: String): Set[String] = {
     val usedModuleNames = getUsedModuleNames(getJSFiles(new File(path)))
+
+//    usedModuleNames.foreach(println)
 
     val declaredModuleNames = getDependencies(new File(path, "package.json").getPath)
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
