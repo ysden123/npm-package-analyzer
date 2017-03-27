@@ -32,6 +32,7 @@ class AnalyzerTest extends FlatSpec with Matchers {
     new Analyzer(pathToTestProject).getModuleNames(""" abc require("test")()""") should equal(Set("test"))
     new Analyzer(pathToTestProject).getModuleNames("""require("test1")require('test2')""") should equal(Set("test1","test2"))
     new Analyzer(pathToTestProject).getModuleNames("""require("te-st1")require('te_st2')""") should equal(Set("te-st1","te_st2"))
+    new Analyzer(pathToTestProject).getModuleNames("const Config = require('jpt-google-adwords1/conf/config');") should equal(Set("jpt-google-adwords1"))
   }
 
   "getDependencies" should "get dependencies from package.json file" in {
