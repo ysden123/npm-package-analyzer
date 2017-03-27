@@ -76,8 +76,6 @@ class Analyzer(val directory: String) {
   def getUnusedModuleNames(path: String): Set[String] = {
     val usedModuleNames = getUsedModuleNames(getJSFiles(new File(path)))
 
-//    usedModuleNames.foreach(println)
-
     val declaredModuleNames = getDependencies(new File(path, "package.json").getPath)
     declaredModuleNames.filter(dm => !usedModuleNames.contains(dm)).toSet
   }
