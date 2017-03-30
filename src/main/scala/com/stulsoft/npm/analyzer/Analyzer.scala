@@ -62,7 +62,7 @@ class Analyzer(val directory: String) {
     require(dir != null, "Parameter dir could not be null.")
     require(dir.exists(), s"Directory ${dir.getName} doesn't exist.")
     val these = dir.listFiles.filter(_.getName.endsWith(".js"))
-    these ++ dir.listFiles.filter(f => f.isDirectory).flatMap(getJSFiles)
+    these ++ dir.listFiles.filter(f => f.isDirectory && !f.getName.contains("node_modules")).flatMap(getJSFiles)
   }
 
   def getUsedModuleNames(files: Array[File]): Set[String] = {
@@ -87,7 +87,7 @@ class Analyzer(val directory: String) {
   }
 
   def analyze: String = {
-    val buffer = new StringBuilder("NPM package analyzer, V 0.1.3\n")
+    val buffer = new StringBuilder("NPM package analyzer, V 0.1.4\n")
 
     buffer.append(s"Analyzing project ${projectPath.getName}\n")
 
